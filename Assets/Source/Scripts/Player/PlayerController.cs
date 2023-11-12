@@ -22,24 +22,17 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         RotaitionMove();
-        _rigidbody.velocity = new Vector2(_joystick.Horizontal * _speed, _joystick.Vertical * _speed);
+        _rigidbody.MovePosition(_rigidbody.position + _joystick.Direction * _speed * Time.deltaTime);
     }
 
     private void RotaitionMove()
     {
-        if (_rigidbody.velocity.x > 0)
+        _animator.SetFloat("Horizon", _joystick.Direction.x);
+        _animator.SetFloat("Speed", _joystick.Direction.sqrMagnitude);
+
+        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1)
         {
-            _animator.SetFloat("LastHorizon", 1);
-            _animator.SetFloat("Speed", 1);
-        }
-        else if (_rigidbody.velocity.x < 0)
-        {
-            _animator.SetFloat("LastHorizon", -1);
-            _animator.SetFloat("Speed", 1);
-        }
-        else
-        {
-            _animator.SetFloat("Speed", 0);
+            _animator.SetFloat("LastHorizon", Input.GetAxisRaw("Horizontal"));
         }
     }
 
