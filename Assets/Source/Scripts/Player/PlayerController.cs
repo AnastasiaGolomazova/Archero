@@ -13,12 +13,6 @@ public class PlayerController : MonoBehaviour
 
     private Animator _animator;
 
-    private Vector2 _movementInput;
-
-    private float _horizont;
-
-    private float _vertical;
-
     private void Start()
     {
         _rigidbody = this.GetComponent<Rigidbody2D>();
@@ -31,19 +25,21 @@ public class PlayerController : MonoBehaviour
         _rigidbody.velocity = new Vector2(_joystick.Horizontal * _speed, _joystick.Vertical * _speed);
     }
 
-    private void OnMove(InputValue inputValue)
-    {
-        _movementInput = inputValue.Get<Vector2>();
-    }
-
     private void RotaitionMove()
     {
-        _animator.SetFloat("Horizon", _movementInput.x);
-        _animator.SetFloat("Speed", _movementInput.sqrMagnitude);
-
-        if(Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1)
+        if (_rigidbody.velocity.x > 0)
         {
-            _animator.SetFloat("LastHorizon", _movementInput.x);
+            _animator.SetFloat("LastHorizon", 1);
+            _animator.SetFloat("Speed", 1);
+        }
+        else if (_rigidbody.velocity.x < 0)
+        {
+            _animator.SetFloat("LastHorizon", -1);
+            _animator.SetFloat("Speed", 1);
+        }
+        else
+        {
+            _animator.SetFloat("Speed", 0);
         }
     }
 
